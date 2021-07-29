@@ -3,6 +3,7 @@ import { Stage, Layer, Line, Image } from "react-konva";
 import { SketchPicker } from "react-color";
 import { Box, Button } from "@material-ui/core";
 import io from "socket.io-client";
+import axios from "axios";
 
 const socket = io("http://localhost:9999", {
   transports: ["websocket"],
@@ -21,6 +22,13 @@ function App() {
   const [color, setColor] = React.useState("#000000");
   const [lines, setLines] = React.useState<Line[]>([]);
   const [allLines, setallLines] = React.useState<Line[]>([]);
+  const [text, setText] = React.useState("text");
+
+  const ButtonClick = () => {
+    axios.get(`http://localhost:9999`).then((res) => {
+      console.log(res.data);
+    });
+  };
 
   const isDrawing = React.useRef(false);
   const stageRef = React.useRef<any>();
@@ -136,7 +144,12 @@ function App() {
         </Box>
         <SketchPicker color={color} onChangeComplete={handleChangeComplete} />
       </Box>
-      <Box mt="50px">{/* <Chat /> */}</Box>
+      <Box mt={8}>
+        <Button onClick={()=>ButtonClick()}>aaaa</Button>
+      </Box>
+      <Box>
+        <p>{text}</p>
+      </Box>
     </>
   );
 }

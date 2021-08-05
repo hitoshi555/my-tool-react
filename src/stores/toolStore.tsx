@@ -7,11 +7,21 @@ type Line = {
   size: number;
 };
 
+type Shape = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  fill: string;
+  shadowBlur: number;
+};
+
 export type ToolStoreType = {
   tool: string;
   size: number;
   color: string;
   allLine: Array<Line>;
+  shapes: Array<Shape>;
   isDrawing: boolean;
   changeTool: (tool: string) => void;
   changeColor: (color: string) => void;
@@ -20,6 +30,7 @@ export type ToolStoreType = {
   onLine: (msg: any) => void;
   moveMouse: (e: any) => void;
   changeIsDrawing: () => void;
+  addShape: () => void;
 };
 
 export default class ToolSrore {
@@ -27,6 +38,7 @@ export default class ToolSrore {
   @observable size = 5;
   @observable color = "#000000";
   @observable allLine = Array();
+  @observable shapes = Array();
   @observable isDrawing = false;
 
   @action.bound changeTool(tool: string) {
@@ -55,6 +67,7 @@ export default class ToolSrore {
       color,
       size,
     });
+    console.log(this.allLine);
   }
 
   @action.bound moveMouse(e: any) {
@@ -66,10 +79,27 @@ export default class ToolSrore {
     let lastLine = this.allLine[this.allLine.length - 1];
     lastLine.points = lastLine.points.concat([point.x, point.y]);
     this.allLine.splice(this.allLine.length - 1, 1, lastLine);
-    // this.allLine(this.allLine.concat());
   }
 
   @action.bound changeIsDrawing() {
     this.isDrawing = false;
+  }
+
+  @action.bound addShape() {
+    const x = 20;
+    const y = 50;
+    const width = 100;
+    const height = 100;
+    const fill = "red";
+    const shadowBlur = 10;
+
+    this.shapes.push({
+      x,
+      y,
+      width,
+      height,
+      fill,
+      shadowBlur,
+    });
   }
 }

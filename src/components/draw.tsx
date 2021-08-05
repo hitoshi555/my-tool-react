@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import { ToolStoreType } from "../stores/toolStore";
 import { SketchPicker } from "react-color";
-import { Box } from "@material-ui/core";
-import { Stage, Layer, Line } from "react-konva";
+import { Box, Button } from "@material-ui/core";
+import { Stage, Layer, Line, Rect } from "react-konva";
 import Draggable from "react-draggable";
 
 type Props = {
@@ -87,6 +87,25 @@ class DrawTool extends Component<Props> {
               }}
             >
               <Layer>
+                {/* <Rect
+                  x={20}
+                  y={50}
+                  width={100}
+                  height={100}
+                  fill="red"
+                  shadowBlur={10}
+                /> */}
+                {tool!.shapes.map((shape, i) => (
+                  <Rect
+                    key={i}
+                    x={shape.x}
+                    y={50}
+                    width={100}
+                    height={100}
+                    fill="red"
+                    shadowBlur={10}
+                  />
+                ))}
                 {tool!.allLine.map((line, i) => (
                   <Line
                     key={i}
@@ -103,6 +122,16 @@ class DrawTool extends Component<Props> {
               </Layer>
             </Stage>
           </Box>
+        </Box>
+        <Box>
+          <Button
+            onClick={() => {
+              tool!.addShape();
+              console.log("aaaa");
+            }}
+          >
+            aaaaaa
+          </Button>
         </Box>
       </>
     );

@@ -4,7 +4,6 @@ import { ToolStoreType } from "../stores/toolStore";
 import { SketchPicker } from "react-color";
 import { Box } from "@material-ui/core";
 import { Stage, Layer, Line } from "react-konva";
-import io from "socket.io-client";
 import Draggable from "react-draggable";
 
 type Props = {
@@ -18,24 +17,11 @@ type LineType = {
   size: any;
 };
 
-const socket = io("http://b36b738277ab.ngrok.io", {
-  transports: ["websocket"],
-});
-
 @inject("tool")
 @observer
 class DrawTool extends Component<Props> {
   render() {
     const { tool } = this.props;
-
-    const emitData = (last: LineType) => {
-      socket.emit("input_event", last);
-    };
-
-    socket.off("broadcast_event");
-    socket.on("broadcast_event", function (msg) {
-      tool!.onLine(msg);
-    });
 
     return (
       <>
@@ -87,10 +73,6 @@ class DrawTool extends Component<Props> {
               onTouchmove={(e: any) => tool!.moveMouse(e)}
               onTouchend={() => {
                 tool!.changeIsDrawing();
-                const last: LineType = tool!.allLine.slice(-1)[0];
-                if (last !== null) {
-                  emitData(last);
-                }
               }}
               onMouseDown={(e: any) => {
                 tool!.addLine(e);
@@ -98,10 +80,6 @@ class DrawTool extends Component<Props> {
               onMousemove={(e: any) => tool!.moveMouse(e)}
               onMouseup={() => {
                 tool!.changeIsDrawing();
-                const last: LineType = tool!.allLine.slice(-1)[0];
-                if (last !== null) {
-                  emitData(last);
-                }
               }}
               style={{
                 border: "solid",

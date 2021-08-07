@@ -3,7 +3,7 @@ import { inject, observer } from "mobx-react";
 import { ToolStoreType } from "../stores/toolStore";
 import { SketchPicker } from "react-color";
 import { Box, Button } from "@material-ui/core";
-import { Stage, Layer, Line, Rect } from "react-konva";
+import { Stage, Layer, Line, Rect, Group } from "react-konva";
 import Draggable from "react-draggable";
 
 type Props = {
@@ -67,43 +67,51 @@ class DrawTool extends Component<Props> {
             <Stage
               width={614}
               height={819}
-              onTouchstart={(e: any) => {
-                tool!.addLine(e);
-              }}
-              onTouchmove={(e: any) => tool!.moveMouse(e)}
-              onTouchend={() => {
-                tool!.changeIsDrawing();
-              }}
-              onMouseDown={(e: any) => {
-                tool!.addLine(e);
-              }}
-              onMousemove={(e: any) => tool!.moveMouse(e)}
-              onMouseup={() => {
-                tool!.changeIsDrawing();
-              }}
+              // onTouchstart={(e: any) => {
+              //   tool!.addLine(e);
+              // }}
+              // onTouchmove={(e: any) => tool!.moveMouse(e)}
+              // onTouchend={() => {
+              //   tool!.changeIsDrawing();
+              // }}
+              // onMouseDown={(e: any) => {
+              //   tool!.addLine(e);
+              // }}
+              // onMousemove={(e: any) => tool!.moveMouse(e)}
+              // onMouseup={() => {
+              //   tool!.changeIsDrawing();
+              // }}
               style={{
                 border: "solid",
                 touchAction: "none",
               }}
             >
               <Layer>
-                {/* <Rect
-                  x={20}
-                  y={50}
-                  width={100}
-                  height={100}
-                  fill="red"
-                  shadowBlur={10}
-                /> */}
-                {tool!.shapes.map((shape, i) => (
+                <Group
+                  clipX={20}
+                  clipY={20}
+                  clipWidth={200}
+                  clipHeight={200}
+                >
+                  <Rect
+                    x={20}
+                    y={20}
+                    width={500}
+                    height={500}
+                    fill="red"
+                    shadowBlur={10}
+                  />
+                </Group>
+              </Layer>
+              {/*    {tool!.shapes.map((shape, i) => (
                   <Rect
                     key={i}
                     x={shape.x}
-                    y={50}
-                    width={100}
-                    height={100}
-                    fill="red"
-                    shadowBlur={10}
+                    y={shape.y}
+                    width={shape.width}
+                    height={shape.height}
+                    fill={shape.fill}
+                    shadowBlur={shape.shadowBlur}
                   />
                 ))}
                 {tool!.allLine.map((line, i) => (
@@ -118,8 +126,7 @@ class DrawTool extends Component<Props> {
                       line.tool === "eraser" ? "destination-out" : "source-over"
                     }
                   />
-                ))}
-              </Layer>
+                ))}*/}
             </Stage>
           </Box>
         </Box>
